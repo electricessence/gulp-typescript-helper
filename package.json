@@ -5,14 +5,14 @@
   "main":"./dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electricessence/typescript-render-helper.git"
+    "url": "git+https://github.com/electricessence/gulp-typescript-helper.git"
   },
   "author": "electricessence",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/electricessence/typescript-render-helper/issues"
+    "url": "https://github.com/electricessence/gulp-typescript-helper/issues"
   },
-  "homepage": "https://github.com/electricessence/typescript-render-helper#readme",
+  "homepage": "https://github.com/electricessence/gulp-typescript-helper#readme",
   "dependencies": {
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^1.6.0",
