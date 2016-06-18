@@ -1,0 +1,7 @@
+.idea
+.gitignore
+.npmignore
+typings
+source
+tsd.json
+tsconfig.json

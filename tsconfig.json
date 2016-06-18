@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "noImplicitAny":true,
+    "removeComments":true,
+    "declaration": true
+  },
+  "exclude": [
+    "typings",
+    "tests",
+    "node_modules",
+    "bower_components",
+    "dist",
+    ".nuget",
+    "documentation"
+  ]
+}

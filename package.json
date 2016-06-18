@@ -1,0 +1,24 @@
+{
+  "name": "gulp-typescript-helper",
+  "version": "1.0.0",
+  "description": "export interface CoreTypeScriptOptions",
+  "main":"./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/electricessence/typescript-render-helper.git"
+  },
+  "author": "electricessence",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/electricessence/typescript-render-helper/issues"
+  },
+  "homepage": "https://github.com/electricessence/typescript-render-helper#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.13.6",
+    "gulp-uglify": "^1.5.3",
+    "merge2": "^1.0.2",
+    "stream-to-promise-agnostic": "^1.0.2"
+  }
+}
