@@ -19,14 +19,6 @@ import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 
 var StreamConvert:StreamToPromise;
 
-
-export default function(Promise:PromiseConstructorLike):TypeScriptRendererFactoryConstructor
-{
-	StreamConvert = new StreamToPromise(Promise);
-	return TypeScriptRendererFactory;
-}
-
-
 function endsWith(source:string, pattern:string):boolean
 {
 	return source.lastIndexOf(pattern)==(source.length - pattern.length);
@@ -34,9 +26,7 @@ function endsWith(source:string, pattern:string):boolean
 
 const REMOVE_EMPTY_LINES_REGEX = /(\n\s*$)+/gm;
 
-export type TypeScriptRenderParams = CoreTypeScriptOptions & typescript.Params;
-
-export class TypeScriptRenderer extends TypeScriptRendererBase<TypeScriptRenderParams>
+export class TypeScriptRenderer extends TypeScriptRendererBase<TypeScriptRenderer.Params>
 {
 	protected onRender():PromiseLike<File[]>
 	{
@@ -73,133 +63,147 @@ export class TypeScriptRenderer extends TypeScriptRendererBase<TypeScriptRenderP
 
 }
 
+export module TypeScriptRenderer {
 
-export class TypeScriptRendererFactory
-{
 
-	compilerOptionDefaults:TypeScriptRenderParams;
+	export type Params = CoreTypeScriptOptions & typescript.Params;
 
-	constructor(
-		public sourceFolder:string,
-		public destinationFolder:string = './',
-		defaults?:TypeScriptRenderParams)
+
+	export function inject(Promise:PromiseConstructorLike):FactoryConstructor
 	{
-
-		this.compilerOptionDefaults
-			= mergeValues({}, defaults); // Make a copy...
+		StreamConvert = new StreamToPromise(Promise);
+		return Factory;
 	}
 
-	static from(sourceFolder:string, defaults?:TypeScriptRenderParams):TypeScriptRendererFactory
+	export class Factory
 	{
-		return new TypeScriptRendererFactory(sourceFolder, null, defaults);
-	}
 
-	static fromTo(
-		sourceFolder:string,
-		destinationFolder:string,
-		defaults?:TypeScriptRenderParams):TypeScriptRendererFactory
-	{
-		return new TypeScriptRendererFactory(sourceFolder, destinationFolder, defaults);
-	}
+		compilerOptionDefaults:Params;
 
-
-	static at(path:string, defaults?:TypeScriptRenderParams):TypeScriptRendererFactory
-	{
-		return new TypeScriptRendererFactory(path, path, defaults);
-	}
-
-	static defaults(options:TypeScriptRenderParams):TypeScriptRendererFactory
-	{
-		return new TypeScriptRendererFactory(
-			null,
-			null,
-			options);
-	}
-
-	from(sourceFolder:string):TypeScriptRendererFactory
-	{
-		return new TypeScriptRendererFactory(
-			sourceFolder,
-			this.destinationFolder,
-			this.compilerOptionDefaults);
-	}
-
-	to(destinationFolder:string):TypeScriptRendererFactory
-	{
-		return new TypeScriptRendererFactory(
-			this.sourceFolder,
-			destinationFolder,
-			this.compilerOptionDefaults);
-	}
-
-	at(targetFolder:string):TypeScriptRendererFactory
-	{
-		return new TypeScriptRendererFactory(
-			targetFolder,
-			targetFolder,
-			this.compilerOptionDefaults);
-	}
-
-	defaults(options:TypeScriptRenderParams):TypeScriptRendererFactory
-	{
-		return new TypeScriptRendererFactory(
-			this.sourceFolder,
-			this.destinationFolder,
-			options);
-	}
-
-	init(toSubFolder?:string, target?:Target.Type, module?:Module.Type):TypeScriptRenderer
-	{
-		var dest = this.destinationFolder;
-		if(!dest) throw new Error("Need to define a base destination folder before initializing.");
-		if(toSubFolder)
+		constructor(
+			public sourceFolder:string,
+			public destinationFolder:string = './',
+			defaults?:Params)
 		{
-			if(!endsWith(dest, '/')) dest += '/';
-			dest += toSubFolder;
+
+			this.compilerOptionDefaults
+				= mergeValues({}, defaults); // Make a copy...
 		}
 
-		var options:TypeScriptRenderParams = {};
-		if(target) options.target = target;
-		if(module) options.module = module;
+		static from(sourceFolder:string, defaults?:Params):Factory
+		{
+			return new Factory(sourceFolder, null, defaults);
+		}
 
-		return new TypeScriptRenderer(this.sourceFolder, dest, mergeValues(options, this.compilerOptionDefaults));
+		static fromTo(
+			sourceFolder:string,
+			destinationFolder:string,
+			defaults?:Params):Factory
+		{
+			return new Factory(sourceFolder, destinationFolder, defaults);
+		}
+
+
+		static at(path:string, defaults?:Params):Factory
+		{
+			return new Factory(path, path, defaults);
+		}
+
+		static defaults(options:Params):Factory
+		{
+			return new Factory(
+				null,
+				null,
+				options);
+		}
+
+		from(sourceFolder:string):Factory
+		{
+			return new Factory(
+				sourceFolder,
+				this.destinationFolder,
+				this.compilerOptionDefaults);
+		}
+
+		to(destinationFolder:string):Factory
+		{
+			return new Factory(
+				this.sourceFolder,
+				destinationFolder,
+				this.compilerOptionDefaults);
+		}
+
+		at(targetFolder:string):Factory
+		{
+			return new Factory(
+				targetFolder,
+				targetFolder,
+				this.compilerOptionDefaults);
+		}
+
+		defaults(options:Params):Factory
+		{
+			return new Factory(
+				this.sourceFolder,
+				this.destinationFolder,
+				options);
+		}
+
+		init(toSubFolder?:string, target?:Target.Type, module?:Module.Type):TypeScriptRenderer
+		{
+			var dest = this.destinationFolder;
+			if(!dest) throw new Error("Need to define a base destination folder before initializing.");
+			if(toSubFolder)
+			{
+				if(!endsWith(dest, '/')) dest += '/';
+				dest += toSubFolder;
+			}
+
+			var options:Params = {};
+			if(target) options.target = target;
+			if(module) options.module = module;
+
+			return new TypeScriptRenderer(this.sourceFolder, dest, mergeValues(options, this.compilerOptionDefaults));
+		}
+
+		addOptions(value:Params):Factory
+		{
+			return new Factory(this.sourceFolder, this.destinationFolder, mergeValues(value, this.compilerOptionDefaults));
+		}
+
+		target(value:Target.Type):Factory
+		{
+			return this.addOptions({target: value});
+		}
+
+		module(value:Module.Type):Factory
+		{
+			return this.addOptions({module: value});
+		}
+
+
 	}
 
-	addOptions(value:TypeScriptRenderParams):TypeScriptRendererFactory
+
+	export interface FactoryConstructor
 	{
-		return new TypeScriptRendererFactory(this.sourceFolder, this.destinationFolder, mergeValues(value, this.compilerOptionDefaults));
+		new (
+			sourceFolder:string,
+			destinationFolder?:string,
+			defaults?:Params):Factory;
+
+		from(sourceFolder:string, defaults?:Params):Factory;
+
+		fromTo(
+			sourceFolder:string,
+			destinationFolder:string,
+			defaults?:Params):Factory;
+
+
+		at(path:string, defaults?:Params):Factory;
+
+		defaults(options:Params):Factory;
+
 	}
-
-	target(value:Target.Type):TypeScriptRendererFactory
-	{
-		return this.addOptions({target: value});
-	}
-
-	module(value:Module.Type):TypeScriptRendererFactory
-	{
-		return this.addOptions({module: value});
-	}
-
-
-}
-
-export interface TypeScriptRendererFactoryConstructor
-{
-	new (
-		sourceFolder:string,
-		destinationFolder?:string,
-		defaults?:TypeScriptRenderParams):TypeScriptRendererFactory;
-
-	from(sourceFolder:string, defaults?:TypeScriptRenderParams):TypeScriptRendererFactory;
-
-	fromTo(
-		sourceFolder:string,
-		destinationFolder:string,
-		defaults?:TypeScriptRenderParams):TypeScriptRendererFactory;
-
-
-	at(path:string, defaults?:TypeScriptRenderParams):TypeScriptRendererFactory;
-
-	defaults(options:TypeScriptRenderParams):TypeScriptRendererFactory;
 
 }

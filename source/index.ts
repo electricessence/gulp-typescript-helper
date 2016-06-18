@@ -8,4 +8,3 @@ export * from './Module';
 export * from './Target';
 export * from './TypeScriptRendererBase';
 export * from './TypeScriptRenderer';
-
