@@ -14,8 +14,10 @@ import {Target} from "./Target";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 import ReadWriteStream = NodeJS.ReadWriteStream;
 
-
-export abstract class TypeScriptRendererBase<TOptions extends CoreTypeScriptOptions>
+/**
+ * Provided as a means for creating other build helpers.
+ */
+export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 {
 
 	public compilerOptions:TOptions;
@@ -46,7 +48,7 @@ export abstract class TypeScriptRendererBase<TOptions extends CoreTypeScriptOpti
 
 	protected abstract onRender():PromiseLike<File[]>;
 
-	render():PromiseLike<File[]>
+	execute():PromiseLike<File[]>
 	{
 
 		var from = this.sourceFolder, to = this.destinationFolder;
@@ -138,4 +140,4 @@ function uglifyPostProcess():ReadWriteStream
 	})
 }
 
-export default TypeScriptRendererBase;
+export default BuildHelperBase;

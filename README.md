@@ -14,9 +14,8 @@ gulp-typescript-helper
 
 ###### Write your tasks like this:
 ```ts
-	import {Target, Module, CoreTypeScriptOptions, TypeScriptRenderer} from "gulp-typescript-helper";
-	import {Promise} from "your-favorite-promise-lib";
-	
+	import {Target, Module, CoreTypeScriptOptions, BuildHelper} from "gulp-typescript-helper";
+		
 	const DEFAULTS:CoreTypeScriptOptions = {
 	    noImplicitAny: true,
 	    removeComments: true,
@@ -26,23 +25,23 @@ gulp-typescript-helper
 	});
 	
 	
-	const renderer = TypeScriptRenderer
+	const builder = BuildHelper
 	    // Setup the renderer by injecting a promise constructor.
-	    .inject(Promise)
+	    .inject(PromiseFactory) // Optional: will use Q as a default.
 	    // Define your source folder and destination base path.
 	    .fromTo(PATH.SOURCE, "./dist" , DEFAULTS);
 	
 	// Subsequent tasks are simplified down to this:
 	gulp.task(
 	    TASK.DIST_UMD,
-	    ()=> renderer
+	    ()=> builder
 	        .init(
 	            MODULE.UMD + '.min',
 	            TARGET.ES5,
 	            MODULE.UMD)
 	        .clear() // Clears the destination directory.
 	        .minify() // Signals to enable minification (uglify).
-	        .render() // Commences the render pipeline
+	        .execute() // Commences the render pipeline
 	        .then(()=>
 	            /* Whatever steps you want to do before completion */) //
 	);

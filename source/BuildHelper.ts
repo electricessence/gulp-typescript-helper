@@ -13,7 +13,7 @@ import * as typescript from "gulp-typescript";
 import * as replace from "gulp-replace";
 import * as mergeStreams from "merge2";
 import {StreamToPromise, PromiseFactory, Executor} from "stream-to-promise-agnostic/StreamToPromise";
-import {TypeScriptRendererBase} from "./TypeScriptRendererBase";
+import {BuildHelperBase} from "./BuildHelperBase";
 import mergeValues from "./mergeValues";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 
@@ -29,7 +29,7 @@ function endsWith(source:string, pattern:string):boolean
 
 const REMOVE_EMPTY_LINES_REGEX = /(\n\s*$)+/gm;
 
-export class TypeScriptRenderer extends TypeScriptRendererBase<TypeScriptRenderer.Params>
+export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 {
 	protected onRender():PromiseLike<File[]>
 	{
@@ -66,7 +66,7 @@ export class TypeScriptRenderer extends TypeScriptRendererBase<TypeScriptRendere
 
 }
 
-export module TypeScriptRenderer {
+export module BuildHelper {
 
 
 	export type Params = CoreTypeScriptOptions & typescript.Params;
@@ -152,7 +152,7 @@ export module TypeScriptRenderer {
 				options);
 		}
 
-		init(toSubFolder?:string, target?:Target.Type, module?:Module.Type):TypeScriptRenderer
+		init(toSubFolder?:string, target?:Target.Type, module?:Module.Type):BuildHelper
 		{
 			var dest = this.destinationFolder;
 			if(!dest) throw new Error("Need to define a base destination folder before initializing.");
@@ -166,7 +166,7 @@ export module TypeScriptRenderer {
 			if(target) options.target = target;
 			if(module) options.module = module;
 
-			return new TypeScriptRenderer(this.sourceFolder, dest, mergeValues(options, this.compilerOptionDefaults));
+			return new BuildHelper(this.sourceFolder, dest, mergeValues(options, this.compilerOptionDefaults));
 		}
 
 		addOptions(value:Params):Factory

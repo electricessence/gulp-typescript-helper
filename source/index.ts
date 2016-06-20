@@ -6,5 +6,5 @@
 export * from './CoreTypeScriptOptions';
 export * from './Module';
 export * from './Target';
-export * from './TypeScriptRendererBase';
-export * from './TypeScriptRenderer';
+export * from './BuildHelperBase';
+export * from './BuildHelper';
