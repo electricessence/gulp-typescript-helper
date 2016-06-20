@@ -69,9 +69,10 @@ export module TypeScriptRenderer {
 	export type Params = CoreTypeScriptOptions & typescript.Params;
 
 
-	export function inject(Promise:PromiseConstructorLike):FactoryConstructor
+	export function inject(Promise:PromiseConstructorLike|string):FactoryConstructor
 	{
-		StreamConvert = new StreamToPromise(Promise);
+		var p:any = typeof Promise==="string" ? Promise = require(<string>Promise) : Promise;
+		StreamConvert = new StreamToPromise(p);
 		return Factory;
 	}
 
