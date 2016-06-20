@@ -62,7 +62,7 @@ export abstract class TypeScriptRendererBase<TOptions extends CoreTypeScriptOpti
 
 		var {module, target} = this.compilerOptions;
 
-		var message = 'TypeScript Render: ';
+		var message = 'Compiling TypeScript: ';
 		if(module && module!=target) message += target + " " + module;
 		else message += target || module;
 		message += " " + (from==to ? from : (from + ' >> ' + to));
