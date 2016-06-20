@@ -17,6 +17,8 @@ import {BuildHelperBase} from "./BuildHelperBase";
 import mergeValues from "./mergeValues";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 
+export {typescript as gulpTypescript};
+
 // Default to Q since Q is a dependency of orchestra which is a dependency of gulp.
 const QPromiseFactory:PromiseFactory = <T>(e:Executor<T>)=>require("q").promise(e);
 
@@ -31,13 +33,13 @@ const REMOVE_EMPTY_LINES_REGEX = /(\n\s*$)+/gm;
 
 export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 {
-	protected onRender():PromiseLike<File[]>
+	protected onExecute():PromiseLike<File[]>
 	{
 		const options = this.compilerOptions,
 		      from    = this.sourceFolder,
 		      to      = this.destinationFolder;
 
-		const declaration = options.declaration || options.declarationFiles;
+		const declaration = options.declaration;
 
 		var tsStart = gulp.src(from + '/**/*.ts');
 		if(options.sourceMap) tsStart = tsStart.pipe(sourcemaps.init());
@@ -69,7 +71,7 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 export module BuildHelper {
 
 
-	export type Params = CoreTypeScriptOptions & typescript.Params;
+	export type Params = CoreTypeScriptOptions;
 
 
 	export function inject(promiseFactory:PromiseFactory):FactoryConstructor

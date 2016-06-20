@@ -5,13 +5,13 @@
 
 ///<reference path="../typings/tsd" />
 
-import * as uglify from "gulp-uglify";
-import * as sourcemaps from "gulp-sourcemaps";
-import * as del from "del";
 import mergeValues from "./mergeValues";
+import * as uglify from "gulp-uglify";
+import * as del from "del";
 import {Module} from "./Module";
 import {Target} from "./Target";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
+import {SourceMapWriteOptions} from "./SourceMapWriteOptions";
 import ReadWriteStream = NodeJS.ReadWriteStream;
 
 /**
@@ -44,9 +44,9 @@ export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 		return this;
 	}
 
-	sourceMapOptions:sourcemaps.WriteOptions;
+	sourceMapOptions:SourceMapWriteOptions;
 
-	protected abstract onRender():PromiseLike<File[]>;
+	protected abstract onExecute():PromiseLike<File[]>;
 
 	execute():PromiseLike<File[]>
 	{
@@ -84,9 +84,9 @@ export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 				if(results && results.length)
 					console.info("Folder cleared:", to);
 				emitStart();
-				return this.onRender();
+				return this.onExecute();
 			})
-			: this.onRender(); // Could hook up post render console logs here?
+			: this.onExecute(); // Could hook up post render console logs here?
 
 		render.then(()=>
 		{
