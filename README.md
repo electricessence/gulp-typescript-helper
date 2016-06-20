@@ -26,7 +26,7 @@ gulp-typescript-helper
 	
 	
 	const builder = BuildHelper
-	    // Setup the renderer by injecting a promise constructor.
+	    // Setup the builder by injecting a promise constructor.
 	    .inject(PromiseFactory) // Optional: will use Q as a default.
 	    // Define your source folder and destination base path.
 	    .fromTo(PATH.SOURCE, "./dist" , DEFAULTS);
