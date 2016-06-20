@@ -1,6 +1,6 @@
 {
   "name": "gulp-typescript-helper",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "export interface CoreTypeScriptOptions",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",

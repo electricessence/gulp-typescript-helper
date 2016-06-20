@@ -1,7 +1,7 @@
 gulp-typescript-helper
 ========================
 
-#### Provides a single simplified means for rendering TypeScript with:
+#### Provides a single simplified means for building TypeScript with:
 * Source Maps
 * Declaration Files
 * Minification
@@ -41,7 +41,7 @@ gulp-typescript-helper
 	            MODULE.UMD)
 	        .clear() // Clears the destination directory.
 	        .minify() // Signals to enable minification (uglify).
-	        .execute() // Commences the render pipeline
+	        .execute() // Commences the build pipeline
 	        .then(()=>
 	            /* Whatever steps you want to do before completion */) //
 	);
