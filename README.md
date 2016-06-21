@@ -1,5 +1,5 @@
 gulp-typescript-helper
-========================
+======================
 
 #### Provides a single simplified means for building TypeScript with:
 * Source Maps

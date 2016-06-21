@@ -1,6 +1,6 @@
 {
   "name": "gulp-typescript-helper",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "export interface CoreTypeScriptOptions",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -23,6 +23,6 @@
     "gulp-uglify": "^1.5.3",
     "merge2": "^1.0.2",
     "q": "^1.4.1",
-    "stream-to-promise-agnostic": "^1.0.3"
+    "stream-to-promise-agnostic": "^1.0.4"
   }
 }

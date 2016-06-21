@@ -12,17 +12,13 @@ import * as sourcemaps from "gulp-sourcemaps";
 import * as typescript from "gulp-typescript";
 import * as replace from "gulp-replace";
 import * as mergeStreams from "merge2";
-import {StreamToPromise, PromiseFactory, Executor} from "stream-to-promise-agnostic/StreamToPromise";
+import {streamToPromise, PromiseFactory, Executor} from "stream-to-promise-agnostic";
 import {BuildHelperBase} from "./BuildHelperBase";
 import mergeValues from "./mergeValues";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 
-export {typescript as gulpTypescript};
-
 // Default to Q since Q is a dependency of orchestra which is a dependency of gulp.
-const QPromiseFactory:PromiseFactory = <T>(e:Executor<T>)=>require("q").promise(e);
-
-var StreamConvert:StreamToPromise = new StreamToPromise(QPromiseFactory);
+var StreamConvert = streamToPromise(<T>(e:Executor<T>)=>require("q").promise(e));
 
 function endsWith(source:string, pattern:string):boolean
 {
@@ -68,7 +64,8 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 
 }
 
-export module BuildHelper {
+export module BuildHelper
+{
 
 
 	export type Params = CoreTypeScriptOptions;
@@ -76,7 +73,7 @@ export module BuildHelper {
 
 	export function inject(promiseFactory:PromiseFactory):FactoryConstructor
 	{
-		StreamConvert = new StreamToPromise(promiseFactory);
+		StreamConvert = streamToPromise(promiseFactory);
 		return Factory;
 	}
 
