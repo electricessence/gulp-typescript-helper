@@ -1,8 +1,19 @@
 {
   "name": "gulp-typescript-helper",
-  "version": "1.1.6",
+  "version": "1.2",
   "description": "export interface CoreTypeScriptOptions",
   "main": "./dist/index.js",
+  "keywords": [
+    "typescript",
+    "gulpplugin",
+    "incremental compilation",
+    "ts",
+    "tsc",
+    "compile",
+    "compiler",
+    "transpile",
+    "gulp-typescript"
+  ],
   "typings": "./dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -16,13 +27,15 @@
   "homepage": "https://github.com/electricessence/gulp-typescript-helper#readme",
   "dependencies": {
     "del": "^2.2.0",
-    "gulp": "^3.9.1",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-typescript": "^2.13.6",
     "gulp-uglify": "^1.5.3",
     "merge2": "^1.0.2",
     "q": "^1.4.1",
     "stream-to-promise-agnostic": "^1.0.4"
+  },
+  "peerDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^2.13.6"
   }
 }
