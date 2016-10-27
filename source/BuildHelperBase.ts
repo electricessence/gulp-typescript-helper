@@ -3,16 +3,17 @@
  * Licensing: MIT
  */
 
-///<reference path="../typings/tsd" />
 
 import mergeValues from "./mergeValues";
 import * as uglify from "gulp-uglify";
-import * as del from "del";
 import {Module} from "./Module";
 import {Target} from "./Target";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 import {SourceMapWriteOptions} from "./SourceMapWriteOptions";
 import ReadWriteStream = NodeJS.ReadWriteStream;
+
+// Del types are currently busted: 20161027.  Just allow for <any> for now.
+const del = require("../node_modules/del/index");
 
 /**
  * Provided as a means for creating other build helpers.

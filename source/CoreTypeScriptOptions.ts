@@ -30,6 +30,7 @@ export interface CoreTypeScriptOptions
 	preserveConstEnums?:boolean;
 	isolatedModules?:boolean;
 	sourceMap?:boolean;
+	strictNullChecks?:boolean;
 }
 
 export default CoreTypeScriptOptions;

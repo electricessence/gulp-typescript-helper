@@ -3,8 +3,6 @@
  * Licensing: MIT https://github.com/electricessence/TypeScript.NET/blob/master/LICENSE.md
  */
 
-///<reference path="../typings/tsd" />
-
 import {Module} from "./Module";
 import {Target} from "./Target";
 import * as gulp from "gulp";
@@ -41,7 +39,7 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 		if(options.sourceMap) tsStart = tsStart.pipe(sourcemaps.init());
 		var tsResult = tsStart.pipe(typescript(options));
 
-		var js = declaration ? tsResult.js : tsResult;
+		var js:any = declaration ? tsResult.js : tsResult;
 		if(this._minify) js = js.pipe(this.getPostProcess());
 		if(options.sourceMap)
 			js = js.pipe(sourcemaps.write('.', this.sourceMapOptions));
@@ -71,6 +69,7 @@ export module BuildHelper
 	export type Params = CoreTypeScriptOptions;
 
 
+	//noinspection JSUnusedLocalSymbols
 	export function inject(promiseFactory:PromiseFactory):FactoryConstructor
 	{
 		StreamConvert = streamToPromise(promiseFactory);

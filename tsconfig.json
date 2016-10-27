@@ -6,7 +6,8 @@
     "sourceMap": true,
     "noImplicitAny":true,
     "removeComments":true,
-    "declaration": true
+    "declaration": true,
+    "moduleResolution": "node"
   },
   "exclude": [
     "typings",
