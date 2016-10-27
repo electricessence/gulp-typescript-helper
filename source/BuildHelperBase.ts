@@ -13,7 +13,7 @@ import {SourceMapWriteOptions} from "./SourceMapWriteOptions";
 import ReadWriteStream = NodeJS.ReadWriteStream;
 
 // Del types are currently busted: 20161027.  Just allow for <any> for now.
-const del = require("../node_modules/del/index");
+const del = require("del");
 
 /**
  * Provided as a means for creating other build helpers.
