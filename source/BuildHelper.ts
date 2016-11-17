@@ -16,7 +16,7 @@ import mergeValues from "./mergeValues";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 
 // Default to Q since Q is a dependency of orchestra which is a dependency of gulp.
-var StreamConvert = streamToPromise(<T>(e:Executor<T>)=>require("q").promise(e));
+let StreamConvert = streamToPromise(<T>(e:Executor<T>) => require("q").promise(e));
 
 function endsWith(source:string, pattern:string):boolean
 {
@@ -24,9 +24,23 @@ function endsWith(source:string, pattern:string):boolean
 }
 
 const REMOVE_EMPTY_LINES_REGEX = /(\n\s*$)+/gm;
+const REMOVE_EXTRANEOUS_ES6_HELPERS = /^\s*\b(var|const|let)\s+(__extends|__generator)\s*=\s*\w+(\.\w+)*(\s*;)?( |\t)*\n?/g;
 
 export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 {
+	/**
+	 * Removes any helper defined constants that are not needed in ES6 so the compiler can omit any imports.
+	 * For simplicity must be defined by a const and explicitly exist on a single line.
+	 * @returns {BuildHelper}
+	 */
+	removeExtraneousES6Helpers():this
+	{
+		this.addPreProcess(source =>
+			source.pipe(replace(REMOVE_EXTRANEOUS_ES6_HELPERS, ""))
+		);
+		return this;
+	}
+
 	protected onExecute():PromiseLike<File[]>
 	{
 		const options = this.compilerOptions,
@@ -35,11 +49,16 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 
 		const declaration = options.declaration;
 
-		var tsStart = gulp.src(from + '/**/*.ts');
-		if(options.sourceMap) tsStart = tsStart.pipe(sourcemaps.init());
-		var tsResult = tsStart.pipe(typescript(options));
+		let tsStart = gulp.src(from + '/**/*.ts');
+		for(let p of this._preProcessors)
+		{
+			tsStart = p(tsStart);
+		}
 
-		var js:any = declaration ? tsResult.js : tsResult;
+		if(options.sourceMap) tsStart = tsStart.pipe(sourcemaps.init());
+		const tsResult = tsStart.pipe(typescript(options));
+
+		let js:any = declaration ? tsResult.js : tsResult;
 		if(this._minify) js = js.pipe(this.getPostProcess());
 		if(options.sourceMap)
 			js = js.pipe(sourcemaps.write('.', this.sourceMapOptions));
@@ -152,7 +171,7 @@ export module BuildHelper
 
 		init(toSubFolder?:string, target?:Target.Type, module?:Module.Type):BuildHelper
 		{
-			var dest = this.destinationFolder;
+			let dest = this.destinationFolder;
 			if(!dest) throw new Error("Need to define a base destination folder before initializing.");
 			if(toSubFolder)
 			{
@@ -160,7 +179,7 @@ export module BuildHelper
 				dest += toSubFolder;
 			}
 
-			var options:Params = {};
+			const options:Params = {};
 			if(target) options.target = target;
 			if(module) options.module = module;
 

@@ -15,6 +15,8 @@ import ReadWriteStream = NodeJS.ReadWriteStream;
 // Del types are currently busted: 20161027.  Just allow for <any> for now.
 const del = require("del");
 
+export type BuildPreProcessor = (source:ReadWriteStream)=>ReadWriteStream;
+
 /**
  * Provided as a means for creating other build helpers.
  */
@@ -49,10 +51,17 @@ export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 
 	protected abstract onExecute():PromiseLike<File[]>;
 
+	protected _preProcessors:BuildPreProcessor[] = [];
+	addPreProcess(processor:BuildPreProcessor):this
+	{
+		this._preProcessors.push(processor);
+		return this;
+	}
+
 	execute():PromiseLike<File[]>
 	{
 
-		var from = this.sourceFolder, to = this.destinationFolder;
+		let from = this.sourceFolder, to = this.destinationFolder;
 
 		if(!from)
 			throw new Error("No source folder.");
@@ -63,9 +72,9 @@ export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 		if(this._clear && from==to)
 			throw new Error("Cannot clear a source folder.");
 
-		var {module, target} = this.compilerOptions;
+		let {module, target} = this.compilerOptions;
 
-		var message = 'Compiling TypeScript: ';
+		let message = 'Compiling TypeScript: ';
 		if(module && module!=target) message += target + " " + module;
 		else message += target || module;
 		message += " " + (from==to ? from : (from + ' >> ' + to));
@@ -78,9 +87,9 @@ export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 
 		if(!this._clear) emitStart();
 
-		var render = this._clear
+		const render = this._clear
 			? del(to + '/**/*').then(
-			(results:string[])=>
+			(results:string[]) =>
 			{
 				if(results && results.length)
 					console.info("Folder cleared:", to);
