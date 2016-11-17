@@ -24,7 +24,7 @@ function endsWith(source:string, pattern:string):boolean
 }
 
 const REMOVE_EMPTY_LINES_REGEX = /(\n\s*$)+/gm;
-const REMOVE_EXTRANEOUS_ES6_HELPERS = /^\s*\b(var|const|let)\s+(__extends|__generator)\s*=\s*\w+(\.\w+)*(\s*;)?( |\t)*\n?/g;
+const REMOVE_EXTRANEOUS_ES6_HELPERS = /\n?^( |\t)*\b(var|const|let)\s+(__extends|__generator)\s*=\s*\w+(\.\w+)*(\s*;)?( |\t)*$/gm;
 
 export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 {
