@@ -57,6 +57,14 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 
 		if(options.sourceMap) tsStart = tsStart.pipe(sourcemaps.init());
 		const tsResult = tsStart.pipe(typescript(options));
+		let dts = tsResult.dts;
+
+		// We need to retain jsDoc comments in .d.ts files.
+		if(options.removeComments) {
+			let o = mergeValues({},options);
+			delete o.removeComments;
+			dts = tsStart.pipe(typescript(o)).dts;
+		}
 
 		let js:any = declaration ? tsResult.js : tsResult;
 		if(this._minify) js = js.pipe(this.getPostProcess());
@@ -69,7 +77,7 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 			?
 			mergeStreams([
 				gulp.src([from + '/**/*.d.ts']),
-				tsResult.dts,
+				dts,
 				js
 			])
 			: js;
