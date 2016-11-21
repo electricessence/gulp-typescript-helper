@@ -71,7 +71,7 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 		js = js.pipe(replace(REMOVE_EMPTY_LINES_REGEX, ""));
 		if(options.sourceMap)
 			js = js.pipe(sourcemaps.write('.', this.sourceMapOptions));
-		js = js.pipe(sourcemaps.write('.', this.sourceMapOptions));  // Since gulp-typescript is 'different'
+		js = js.pipe(replace(REMOVE_EMPTY_LINES_REGEX, ""));  // Since gulp-typescript is 'different'
 
 		const stream = declaration
 			?
