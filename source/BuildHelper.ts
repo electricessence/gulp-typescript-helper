@@ -68,10 +68,10 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 
 		let js:any = declaration ? tsResult.js : tsResult;
 		if(this._minify) js = js.pipe(this.getPostProcess());
+		js = js.pipe(replace(REMOVE_EMPTY_LINES_REGEX, ""));
 		if(options.sourceMap)
 			js = js.pipe(sourcemaps.write('.', this.sourceMapOptions));
-
-		js = js.pipe(replace(REMOVE_EMPTY_LINES_REGEX, "")); // Since gulp-typescript is 'different'
+		js = js.pipe(sourcemaps.write('.', this.sourceMapOptions));  // Since gulp-typescript is 'different'
 
 		const stream = declaration
 			?
