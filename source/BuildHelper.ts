@@ -93,7 +93,7 @@ export module BuildHelper
 {
 
 
-	export type Params = CoreTypeScriptOptions;
+	export type Params = CoreTypeScriptOptions & typescript.Settings;
 
 
 	//noinspection JSUnusedLocalSymbols
