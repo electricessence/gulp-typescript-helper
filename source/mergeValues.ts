@@ -9,10 +9,19 @@
  * @param defaults
  * @returns 
  */
-export default
+
 function mergeValues<T extends Object, U extends Object>(
 	target:T,
 	defaults:U):T & U
+function mergeValues<T extends Object>(
+	target:T,
+	defaults:undefined|null):T
+function mergeValues<T extends Object, U extends Object>(
+	target:T,
+	defaults:U|undefined|null):T & U | T
+function mergeValues(
+	target:any,
+	defaults:any):any
 {
 	const result:any = target || {};
 	for(const key in defaults)
@@ -25,3 +34,4 @@ function mergeValues<T extends Object, U extends Object>(
 	return result;
 }
 
+export default mergeValues;

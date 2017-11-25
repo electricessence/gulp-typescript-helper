@@ -24,7 +24,7 @@ function endsWith(source:string, pattern:string):boolean
 }
 
 const REMOVE_EMPTY_LINES_REGEX = /(\n\s*$)+/gm;
-const REMOVE_EXTRANEOUS_ES6_HELPERS = /\n?^( |\t)*\b(var|const|let)\s+(__extends|__generator)\s*=\s*\w+(\.\w+)*(\s*;)?( |\t)*$/gm;
+const REMOVE_EXTRANEOUS_ES6_HELPERS = /\n?^(\s|\t)*\b(var|const|let)\s+(__extends|__generator)\s*=\s*\w+(\.\w+)*(\s*;)?(\s|\t)*$/gm;
 
 export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 {
@@ -109,8 +109,8 @@ export module BuildHelper
 		compilerOptionDefaults:Params;
 
 		constructor(
-			public sourceFolder:string,
-			public destinationFolder:string = './',
+			public sourceFolder:string|null,
+			public destinationFolder:string|null = './',
 			defaults?:Params)
 		{
 
@@ -179,6 +179,9 @@ export module BuildHelper
 
 		init(toSubFolder?:string, target?:Target.Type, module?:Module.Type):BuildHelper
 		{
+			let source = this.sourceFolder;
+			if(!source) throw new Error("Need to define a source folder before initializing.");
+
 			let dest = this.destinationFolder;
 			if(!dest) throw new Error("Need to define a base destination folder before initializing.");
 			if(toSubFolder)
@@ -191,7 +194,7 @@ export module BuildHelper
 			if(target) options.target = target;
 			if(module) options.module = module;
 
-			return new BuildHelper(this.sourceFolder, dest, mergeValues(options, this.compilerOptionDefaults));
+			return new BuildHelper(source, dest, mergeValues(options, this.compilerOptionDefaults));
 		}
 
 		addOptions(value:Params):Factory

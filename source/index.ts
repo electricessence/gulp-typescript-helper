@@ -4,7 +4,6 @@
  */
 
 export * from './CoreTypeScriptOptions';
-export * from './SourceMapWriteOptions';
 export * from './Module';
 export * from './Target';
 export * from './BuildHelperBase';

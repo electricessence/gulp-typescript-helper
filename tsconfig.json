@@ -5,6 +5,7 @@
     "target": "es5",
     "sourceMap": true,
     "noImplicitAny":true,
+    "strictNullChecks": true,
     "removeComments":true,
     "declaration": true,
     "moduleResolution": "node"

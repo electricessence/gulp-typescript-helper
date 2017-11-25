@@ -6,10 +6,10 @@
 
 import mergeValues from "./mergeValues";
 import * as uglify from "gulp-uglify";
+import {WriteOptions as SourceMapWriteOptions} from "gulp-sourcemaps";
 import {Module} from "./Module";
 import {Target} from "./Target";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
-import {SourceMapWriteOptions} from "./SourceMapWriteOptions";
 import ReadWriteStream = NodeJS.ReadWriteStream;
 
 // Del types are currently busted: 20161027.  Just allow for <any> for now.
@@ -32,7 +32,7 @@ export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 	{
 
 		this.sourceMapOptions = {
-			sourceRoot: null
+			sourceRoot: void(0)
 		};
 
 		this.compilerOptions
