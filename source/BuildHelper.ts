@@ -16,6 +16,7 @@ import mergeValues from "./mergeValues";
 import {CoreTypeScriptOptions} from "./CoreTypeScriptOptions";
 
 // Default to Q since Q is a dependency of orchestra which is a dependency of gulp.
+// noinspection TypeScriptValidateJSTypes
 let StreamConvert = streamToPromise(<T>(e:Executor<T>) => require("q").promise(e));
 
 function endsWith(source:string, pattern:string):boolean
@@ -67,10 +68,14 @@ export class BuildHelper extends BuildHelperBase<BuildHelper.Params>
 		}
 
 		let js:any = declaration ? tsResult.js : tsResult;
-		if(this._minify) js = js.pipe(this.getPostProcess());
+
+		if(this._minify) // noinspection JSDeprecatedSymbols
+			js = js.pipe(this.getPostProcess());
+		// noinspection JSDeprecatedSymbols
 		js = js.pipe(replace(REMOVE_EMPTY_LINES_REGEX, ""));
-		if(options.sourceMap)
+		if(options.sourceMap) 	// noinspection JSDeprecatedSymbols
 			js = js.pipe(sourcemaps.write('.', this.sourceMapOptions));
+		// noinspection JSDeprecatedSymbols
 		js = js.pipe(replace(REMOVE_EMPTY_LINES_REGEX, ""));  // Since gulp-typescript is 'different'
 
 		const stream = declaration

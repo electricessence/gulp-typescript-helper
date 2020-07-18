@@ -25,6 +25,7 @@ export abstract class BuildHelperBase<TOptions extends CoreTypeScriptOptions>
 
 	public compilerOptions:TOptions;
 
+	// noinspection TypeScriptAbstractClassConstructorCanBeMadeProtected
 	constructor(
 		public sourceFolder:string,
 		public destinationFolder:string,
