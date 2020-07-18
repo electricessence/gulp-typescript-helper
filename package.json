@@ -1,11 +1,11 @@
 {
   "name": "gulp-typescript-helper",
-  "version": "2.0.0-beta1",
+  "version": "2.0.0",
   "description": "export interface CoreTypeScriptOptions",
   "main": "./dist/index.js",
   "keywords": [
     "typescript",
-    "gulpplugin",
+    "gulp plugin",
     "incremental compilation",
     "ts",
     "tsc",
